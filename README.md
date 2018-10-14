@@ -4,7 +4,7 @@
 
 React is a JavaScript library for building user interfaces
 
-> 리액트는 SPA 프레임워크가 아닌, 뷰 라이브러리(View Library)입니다. 여기서 뷰(View)란 MVC 패턴(Model–View–Controller Pattern)의 'V'를 말합니다. 뷰는 브라우저 내 특정 컴포넌트를 보여주는 역할을 하기 때문3에, 리액트로 단일 페이지 애플리케이션을 개발할 수 있는 것입니다.
+> 리액트는 SPA 프레임워크가 아닌, 뷰 라이브러리(View Library)입니다. 여기서 뷰(View)란 MVC 패턴(Model–View–Controller Pattern)의 'V'를 말합니다. 뷰는 브라우저 내 특정 컴포넌트를 보여주는 역할을 하기 때문에, 리액트로 단일 페이지 애플리케이션을 개발할 수 있는 것입니다.
 
 ### Create React App
 
@@ -14,8 +14,22 @@ Boilerplate for react (babel, webpack, eslint, react, HMR, webpack-dev-server, b
 
 ### JSX (JavaScript Xml)
 
-syntax extension to JavaScript.(markup in JS)  
-JSX produces React “elements”
+JavaScript에서 markup(xml)을 사용할 수 있는 JavaScript의 문법적 확장  
+react의 `element`를 생성
+
+```js
+const element = (
+  <h1 className="greeting">
+    Hello, world!
+  </h1>
+);
+// by babel
+const element = React.createElement(
+  'h1',
+  {className: 'greeting'},
+  'Hello, world!'
+);
+```
 
 ```js
 function formatName(user) {
@@ -88,11 +102,17 @@ function tick() {
 setInterval(tick, 1000);
 ```
 
+[(State and Lifecycle)](#State-and-Lifecycle)
+
 ### Component
 
 Components let you split the UI into independent, reusable pieces, and think about each piece in isolation
 
-> Conceptually, components are like JavaScript functions. They accept arbitrary inputs (called “props”) and `return React elements` describing what should appear on the screen.
+> Conceptually, components are like JavaScript functions. They accept arbitrary inputs (called `“props”`) and `return React elements` describing what should appear on the screen.
+
+props
+> When React sees an element representing a user-defined component, it passes `JSX attributes` to this component as a single object. We call this object `“props”`.
+s
 
 #### Function Component
 
@@ -131,7 +151,7 @@ ReactDOM.render(
 > 3. Our `Welcome` component returns a `<h1>Hello, Sara</h1>` element as the result.
 > 4. React DOM efficiently updates the DOM to match `<h1>Hello, Sara</h1>`.
 
-\* Always start component names with a capital letter
+\* **Component 이름은 항상 대문자로 시작해야 한다.**
 
 #### Comopse Component
 
@@ -247,7 +267,30 @@ ReactDOM.render(
 
 #### State
 
-State is similar to props, but it is `private and fully controlled by the component`. (a feature available only to classes.)
+State is similar to props, but it is `private and fully controlled by the component`. (*a feature available only to `classes`.*)
+
+#### LifeCycle (v16.3~)
+
+##### Mount
+
+Rendered to the DOM for the first time. (render())
+
+##### Unmount
+
+DOM produced by the component is removed.
+
+![lifecycle](https://cdn-images-1.medium.com/max/1600/0*OoDfQ7pzAqg6yETH.)
+
+- `constructor(props)` - component가 새로 만들어질 때 마다 호출
+- `componentWillMount()` - deprecated (UNSAFE_componentWillMount)
+- `componentDidMount()` - 외부 라이브러리 연동, ajax 요청, DOM 접근(읽기, 변경...)
+- `componentWillReceiveProps(nextProps)` - deprecated (UNSAFE_componentWillReceiveProps)
+- `getDerivedStateFromProps(nextProps, prevState)` - props로 state를 동기화 하는 작업, props가 바뀔 때 설정하고 싶은 state값을 리턴 (없으면 null)
+- `shouldComponentUpdate(nextProps, nextState)` - component 최적화(Virtual DOM에 rendering 여부를 반환)
+- `componentWillUpdate(nextProps, nextState)` - deprecated
+- `getSnapshotBeforeUpdate(prevProps, prevState)` - DOM 변화가 일어나기 직전의 DOM 상태를 가져오고, 리턴값은 componentDidUpdate 에서 3번째 파라미터로 전달
+- `componentDidUpdate(prevProps, prevState, snapshot)` - this.props, this.state가 바뀐 상태
+- `componentWillUnmount()`
 
 #### Funtion to Class
 
@@ -263,12 +306,6 @@ class Clock extends React.Component {
   }
 }
 ```
-
-> 1. Create an ES6 class, with the same name, that extends React.Component.
-> 2. Add a single empty method to it called render().
-> 3. Move the body of the function into the render() method.
-> 4. Replace props with this.props in the render() body.
-> 5. Delete the remaining empty function declaration.
 
 #### props to state
 
@@ -296,16 +333,6 @@ ReactDOM.render(
 ```
 
 #### Add lifecycle methods
-
-![d](https://cdn-images-1.medium.com/max/1600/0*OoDfQ7pzAqg6yETH.)
-
-##### Mount
-
-Rendered to the DOM for the first time. (render())
-
-##### Unmount
-
-DOM produced by the component is removed.
 
 ```js
 class Clock extends React.Component {
