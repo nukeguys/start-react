@@ -256,28 +256,14 @@ All React components must act like [pure](https://en.wikipedia.org/wiki/Pure_fun
 
 ### State and Lifecycle
 
-#### We want: [Clock](#Update-Element) update itself
-
-```js
-ReactDOM.render(
-  <Clock />,
-  document.getElementById('root')
-);
-```
-
 #### State
 
 State is similar to props, but it is `private and fully controlled by the component`. (*a feature available only to `classes`.*)
 
 #### LifeCycle (v16.3~)
 
-##### Mount
-
-Rendered to the DOM for the first time. (render())
-
-##### Unmount
-
-DOM produced by the component is removed.
+`Mount` - Rendered to the DOM for the first time. (render())  
+`Unmount` - DOM produced by the component is removed.
 
 ![lifecycle](https://cdn-images-1.medium.com/max/1600/0*OoDfQ7pzAqg6yETH.)
 
@@ -286,11 +272,20 @@ DOM produced by the component is removed.
 - `componentDidMount()` - 외부 라이브러리 연동, ajax 요청, DOM 접근(읽기, 변경...)
 - `componentWillReceiveProps(nextProps)` - deprecated (UNSAFE_componentWillReceiveProps)
 - `getDerivedStateFromProps(nextProps, prevState)` - props로 state를 동기화 하는 작업, props가 바뀔 때 설정하고 싶은 state값을 리턴 (없으면 null)
-- `shouldComponentUpdate(nextProps, nextState)` - component 최적화(Virtual DOM에 rendering 여부를 반환)
+- `shouldComponentUpdate(nextProps, nextState)` - component 최적화, [Virtual DOM](https://www.youtube.com/watch?v=muc2ZF0QIO4)에 rendering 여부를 반환)
 - `componentWillUpdate(nextProps, nextState)` - deprecated
 - `getSnapshotBeforeUpdate(prevProps, prevState)` - DOM 변화가 일어나기 직전의 DOM 상태를 가져오고, 리턴값은 componentDidUpdate 에서 3번째 파라미터로 전달
 - `componentDidUpdate(prevProps, prevState, snapshot)` - this.props, this.state가 바뀐 상태
 - `componentWillUnmount()`
+
+#### We want: [Clock](#Update-Element) update itself
+
+```js
+ReactDOM.render(
+  <Clock />,
+  document.getElementById('root')
+);
+```
 
 #### Funtion to Class
 
@@ -427,8 +422,6 @@ componentDidMount() {
 
 > Neither parent nor child components can know if a certain component is stateful or stateless, and they shouldn’t care whether it is defined as a function or a class.
 
-state는 private, data는 props를 통해 전달
-
 ```js
 // in Clock
 <h2>
@@ -453,6 +446,7 @@ function FormattedDate(props) {
 - [create-react-app](https://github.com/facebook/create-react-app)
 - [Creating a React App... From Scratch](https://blog.usejournal.com/creating-a-react-app-from-scratch-f3c693b84658)
 - [누구든지 하는 리액트 5편: LifeCycle API](https://velopert.com/3631)
+- [[번역] 리액트에 대해서 그 누구도 제대로 설명하기 어려운 것 – 왜 Virtual DOM 인가?](https://velopert.com/3236)
 - [깊이 있는 리액트 개발 환경 구축하기](http://sujinlee.me/webpack-react-tutorial/)
 - [The the Road to learn React](https://github.com/the-road-to-learn-react/the-road-to-learn-react-korean)
 - [Getting Started with React – An Overview and Walkthrough](https://www.taniarascia.com/getting-started-with-react/)
