@@ -37,9 +37,7 @@ const element = React.createElement(
 );
 ```
 
-#### ㅇ
-
-꼭 닫혀야 하는 태그
+#### 꼭 닫혀야 하는 태그
 
 ```js
 class App extends Component {
@@ -53,7 +51,7 @@ class App extends Component {
 }
 ```
 
-감싸져 있는 엘리먼트 ([Fragment](https://reactjs.org/docs/fragments.html))
+#### 감싸져 있는 엘리먼트 ([Fragment](https://reactjs.org/docs/fragments.html))
 
 ```js
 class App extends Component {
@@ -72,7 +70,7 @@ class App extends Component {
 }
 ```
 
-JSX 안에 자바스크립트 값 사용하기
+#### JSX 안에 자바스크립트 값 사용하기
 
 ```js
 class App extends Component {
@@ -87,11 +85,11 @@ class App extends Component {
 }
 ```
 
-조건부 렌더링
+#### 조건부 렌더링
 
 [Conditional Rendering in JSX](#Conditional-Rendering-in-JSX)
 
-style 과 className
+#### style 과 className
 
 ```js
 class App extends Component {
@@ -112,7 +110,7 @@ class App extends Component {
 }
 ```
 
-주석
+#### 주석
 
 ```js
 class App extends Component {
@@ -1011,7 +1009,7 @@ function WelcomeDialog() {
 >3. Either the common owner or another component higher up in the hierarchy should own the state.
 >4. If you can’t find a component where it makes sense to own the state, create a new component simply for holding the state and add it somewhere in the hierarchy above the common owner component.
 
-#### Step 5: Add Inverse Data Flowz
+#### Step 5: Add Inverse Data Flow
 
 ## Reference
 
