@@ -21,7 +21,7 @@ npm start
 ### JSX (JavaScript Xml)
 
 JavaScript에서 markup(xml)을 사용할 수 있는 JavaScript의 문법적 확장  
-react의 `element`를 생성
+react의 `element`를 생성(React.crateElement())
 
 ```js
 const element = (
@@ -37,38 +37,96 @@ const element = React.createElement(
 );
 ```
 
-```js
-function formatName(user) {
-  return user.firstName + ' ' + user.lastName;
-}
+#### ㅇ
 
-function getGreeting(user) {
-  if (user) {
+꼭 닫혀야 하는 태그
+
+```js
+class App extends Component {
+  render() {
     return (
-        <div tabIndex={user.index}>
-            <h1>Hello, {formatName(user)}!
-            </h1>
-        </div>
+      <div>
+        <input type="text"> // <input type="text" />
+      </div>
     );
   }
-  return (
-        <div tabIndex="0">
-            <h1>Hello, Stranger.</h1>
-        </div>
-    );
 }
-const user = {
-  firstName: 'Harper',
-  lastName: 'Perez',
-  index: "1"
-};
+```
 
-const element = getGreeting(user);
+감싸져 있는 엘리먼트 ([Fragment](https://reactjs.org/docs/fragments.html))
 
-ReactDOM.render(
-  element,
-  document.getElementById('root')
-);
+```js
+class App extends Component {
+  render() {
+    return (
+      // <Fragment>
+      <div>
+        Hello
+      </div>
+      <div>
+        Bye
+      </div>
+      // </Fragment>
+    );
+  }
+}
+```
+
+JSX 안에 자바스크립트 값 사용하기
+
+```js
+class App extends Component {
+  render() {
+    const name = 'react';
+    return (
+      <div>
+        hello {name}!
+      </div>
+    );
+  }
+}
+```
+
+조건부 렌더링
+
+[Conditional Rendering in JSX](#Conditional-Rendering-in-JSX)
+
+style 과 className
+
+```js
+class App extends Component {
+  render() {
+    const style = {
+      backgroundColor: 'black',
+      padding: '16px',
+      color: 'white',
+      fontSize: '12px'
+    };
+
+    return (
+      <div style={style}>
+        hi there
+      </div>
+    );
+  }
+}
+```
+
+주석
+
+```js
+class App extends Component {
+  render() {
+    return (
+      <div>
+        {/* 주석은 이렇게 */}
+        <h1
+          // 태그 사이에
+        >리액트</h1>
+      </div>
+    );
+  }
+}
 ```
 
 ### Element
@@ -447,6 +505,14 @@ function FormattedDate(props) {
 
 ### Event Handliing
 
+#### React event
+
+- lowercase > camelCase
+- string > function
+- return false > preventDefault()
+
+> Your event handlers will be passed instances of `SyntheticEvent`, a cross-browser wrapper around the browser’s native event. It has the same interface as the browser’s native event, including `stopPropagation()` and `preventDefault()`, except the events work identically across all browsers.
+
 ```js
 <a href="#" onclick="console.log('The link was clicked.'); return false">
   Click me
@@ -467,10 +533,6 @@ function ActionLink() {
   );
 }
 ```
-
-- lowercase > camelCase
-- string > function
-- return false > preventDefault()
 
 #### bind or arrow function
 
@@ -571,7 +633,7 @@ render() {
 }
 ```
 
-#### prevent redering
+#### prevent rendering
 
 ```js
 function WarningBanner(props) {
@@ -587,7 +649,7 @@ function WarningBanner(props) {
 }
 ```
 
-/* lifecycle methods will still be called.
+\* lifecycle methods will still be called.
 
 ### List (array)
 
@@ -949,7 +1011,7 @@ function WelcomeDialog() {
 >3. Either the common owner or another component higher up in the hierarchy should own the state.
 >4. If you can’t find a component where it makes sense to own the state, create a new component simply for holding the state and add it somewhere in the hierarchy above the common owner component.
 
-#### Step 5: Add Inverse Data Flow
+#### Step 5: Add Inverse Data Flowz
 
 ## Reference
 
@@ -959,6 +1021,7 @@ function WelcomeDialog() {
 - [Creating a React App... From Scratch](https://blog.usejournal.com/creating-a-react-app-from-scratch-f3c693b84658)
 - [누구든지 하는 리액트 5편: LifeCycle API](https://velopert.com/3631)
 - [[번역] 리액트에 대해서 그 누구도 제대로 설명하기 어려운 것 – 왜 Virtual DOM 인가?](https://velopert.com/3236)
+- [List of top 222 ReactJS Interview Questions & Answers](https://github.com/sudheerj/reactjs-interview-questions#what-are-synthetic-events-in-reactjs)
 - [깊이 있는 리액트 개발 환경 구축하기](http://sujinlee.me/webpack-react-tutorial/)
 - [The the Road to learn React](https://github.com/the-road-to-learn-react/the-road-to-learn-react-korean)
 - [Getting Started with React – An Overview and Walkthrough](https://www.taniarascia.com/getting-started-with-react/)
