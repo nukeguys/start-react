@@ -174,7 +174,6 @@ Components let you split the UI into independent, reusable pieces, and think abo
 
 props
 > When React sees an element representing a user-defined component, it passes `JSX attributes` to this component as a single object. We call this object `“props”`.
-s
 
 #### Function Component
 
