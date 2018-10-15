@@ -12,6 +12,12 @@ React is a JavaScript library for building user interfaces
 
 Boilerplate for react (babel, webpack, eslint, react, HMR, webpack-dev-server, build for production...)
 
+```bash
+npx create-react-app my-app
+cd my-app
+npm start
+```
+
 ### JSX (JavaScript Xml)
 
 JavaScript에서 markup(xml)을 사용할 수 있는 JavaScript의 문법적 확장  
@@ -438,6 +444,512 @@ function FormattedDate(props) {
 ```
 
 > FormattedDate wouldn’t know whether it came from the Clock’s state, from the Clock’s props, or was typed by hand
+
+### Event Handliing
+
+```js
+<a href="#" onclick="console.log('The link was clicked.'); return false">
+  Click me
+</a>
+```
+
+```js
+function ActionLink() {
+  function handleClick(e) {
+    e.preventDefault();
+    console.log('The link was clicked.');
+  }
+
+  return (
+    <a href="#" onClick={handleClick}>
+      Click me
+    </a>
+  );
+}
+```
+
+- lowercase > camelCase
+- string > function
+- return false > preventDefault()
+
+#### bind or arrow function
+
+```js
+class Toggle extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {isToggleOn: true};
+
+    // This binding is necessary to make `this` work in the callback
+    this.handleClick = this.handleClick.bind(this);
+  }
+
+  handleClick() {
+    this.setState(state => ({
+      isToggleOn: !state.isToggleOn
+    }));
+  }
+
+  render() {
+    return (
+      <button onClick={this.handleClick}>
+        {this.state.isToggleOn ? 'ON' : 'OFF'}
+      </button>
+    );
+  }
+}
+
+ReactDOM.render(
+  <Toggle />,
+  document.getElementById('root')
+);
+```
+
+```js
+class LoggingButton extends React.Component {
+  handleClick = () => {
+    console.log('this is:', this);
+  }
+
+  render() {
+    return (
+      <button onClick={this.handleClick}>
+        Click me
+      </button>
+    );
+  }
+}
+```
+
+### in loop
+
+```js
+<button onClick={(e) => this.deleteRow(id, e)}>Delete Row</button>
+<button onClick={this.deleteRow.bind(this, id)}>Delete Row</button>
+```
+
+### Conditional Rendering in JSX
+
+#### `&&` operator
+
+```js
+function Mailbox(props) {
+  const unreadMessages = props.unreadMessages;
+  return (
+    <div>
+      <h1>Hello!</h1>
+      {unreadMessages.length > 0 &&
+        <h2>
+          You have {unreadMessages.length} unread messages.
+        </h2>
+      }
+    </div>
+  );
+}
+
+const messages = ['React', 'Re: React', 'Re:Re: React'];
+ReactDOM.render(
+  <Mailbox unreadMessages={messages} />,
+  document.getElementById('root')
+);
+```
+
+#### `condition ? true : false`
+
+```js
+render() {
+  const isLoggedIn = this.state.isLoggedIn;
+  return (
+    <div>
+      {isLoggedIn ? (
+        <LogoutButton onClick={this.handleLogoutClick} />
+      ) : (
+        <LoginButton onClick={this.handleLoginClick} />
+      )}
+    </div>
+  );
+}
+```
+
+#### prevent redering
+
+```js
+function WarningBanner(props) {
+  if (!props.warn) {
+    return null;
+  }
+
+  return (
+    <div className="warning">
+      Warning!
+    </div>
+  );
+}
+```
+
+/* lifecycle methods will still be called.
+
+### List (array)
+
+```js
+function NumberList(props) {
+  const numbers = props.numbers;
+  const listItems = numbers.map((number) =>
+    <li>{number}</li>
+  );
+  return (
+    <ul>{listItems}</ul>
+  );
+}
+
+const numbers = [1, 2, 3, 4, 5];
+ReactDOM.render(
+  <NumberList numbers={numbers} />,
+  document.getElementById('root')
+);
+```
+
+#### key
+
+```js
+const todoItems = todos.map((todo) =>
+  <li key={todo.id}>
+    {todo.text}
+  </li>
+);
+```
+
+>- Keys help React identify which items have changed, are added, or are removed. Keys should be given to the elements inside the array to give the elements a stable identity  
+>- The best way to pick a key is to use a string that `uniquely identifies a list item among its siblings`. Most often you would use IDs from your data as keys  
+>- If you choose not to assign an explicit key to list items then React will default to using indexes as keys  
+>- Keys only make sense in the context of the surrounding array
+
+map() in JSX
+
+```js
+function NumberList(props) {
+  const numbers = props.numbers;
+  return (
+    <ul>
+      {numbers.map((number) =>
+        <ListItem key={number.toString()}
+                  value={number} />
+      )}
+    </ul>
+  );
+}
+```
+
+### Form
+
+> In a `controlled component`, form data is handled by a React component. The alternative is `uncontrolled components`, where form data is handled by the DOM itself.
+
+```js
+class NameForm extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {value: ''};
+
+    this.handleChange = this.handleChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
+  }
+
+  handleChange(event) {
+    this.setState({value: event.target.value});
+  }
+
+  handleSubmit(event) {
+    alert('A name was submitted: ' + this.state.value);
+    event.preventDefault();
+  }
+
+  render() {
+    return (
+      <form onSubmit={this.handleSubmit}>
+        <label>
+          Name:
+          <input type="text" value={this.state.value} onChange={this.handleChange} />
+        </label>
+        <input type="submit" value="Submit" />
+      </form>
+    );
+  }
+}
+```
+
+#### textarea
+
+`<textarea>` uses a `value` attribute.
+
+```js
+<textarea value={this.state.value} onChange={this.handleChange} />
+```
+
+#### select
+
+instead of using this `selected` attribute, uses a `value` attribute on the root `select` tag.
+
+```js
+<select value={this.state.value} onChange={this.handleChange}>
+  <option value="grapefruit">Grapefruit</option>
+  <option value="lime">Lime</option>
+  <option value="coconut">Coconut</option>
+  <option value="mango">Mango</option>
+</select>
+```
+
+#### multiple inputs
+
+> When you need to handle multiple controlled input elements, you can add a `name` attribute to each element and let the handler function choose what to do based on the value of `event.target.name`.
+
+```js
+lass Reservation extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      isGoing: true,
+      numberOfGuests: 2
+    };
+
+    this.handleInputChange = this.handleInputChange.bind(this);
+  }
+
+  handleInputChange(event) {
+    const target = event.target;
+    const value = target.type === 'checkbox' ? target.checked : target.value;
+    const name = target.name;
+
+    this.setState({
+      [name]: value // computed property name
+    });
+  }
+
+  render() {
+    return (
+      <form>
+        <label>
+          Is going:
+          <input
+            name="isGoing"
+            type="checkbox"
+            checked={this.state.isGoing}
+            onChange={this.handleInputChange} />
+        </label>
+        <br />
+        <label>
+          Number of guests:
+          <input
+            name="numberOfGuests"
+            type="number"
+            value={this.state.numberOfGuests}
+            onChange={this.handleInputChange} />
+        </label>
+      </form>
+    );
+  }
+}
+```
+
+#### Controlled Input Null Value
+
+> Specifying the value prop on a controlled component prevents the user from changing the input unless you desire so. If you’ve specified a value but the input is still editable, you may have accidentally set `value` to `undefined` or `null`.
+
+#### Uncontrolled Component (v16.3~)
+
+Managing focus, text selection, or media playback.
+Triggering imperative animations.
+Integrating with third-party DOM libraries.
+
+[React.createRef()](https://github.com/reactjs/rfcs/blob/master/text/0017-new-create-ref.md)
+
+DOM Element
+
+```js
+class CustomTextInput extends React.Component {
+  constructor(props) {
+    super(props);
+    // create a ref to store the textInput DOM element
+    this.textInput = React.createRef();
+    this.focusTextInput = this.focusTextInput.bind(this);
+  }
+
+  focusTextInput() {
+    // Explicitly focus the text input using the raw DOM API
+    // Note: we're accessing "current" to get the DOM node
+    this.textInput.current.focus();
+  }
+
+  render() {
+    // tell React that we want to associate the <input> ref
+    // with the `textInput` that we created in the constructor
+    return (
+      <div>
+        <input
+          type="text"
+          ref={this.textInput} />
+
+        <input
+          type="button"
+          value="Focus the text input"
+          onClick={this.focusTextInput}
+        />
+      </div>
+    );
+  }
+}
+```
+
+Class Component
+
+```js
+class AutoFocusTextInput extends React.Component {
+  constructor(props) {
+    super(props);
+    this.textInput = React.createRef();
+  }
+
+  componentDidMount() {
+    this.textInput.current.focusTextInput();
+  }
+
+  render() {
+    return (
+      <CustomTextInput ref={this.textInput} />
+    );
+  }
+}
+```
+
+Do not use ref attribute on function components
+
+```js
+function MyFunctionComponent() {
+  return <input />;
+}
+
+class Parent extends React.Component {
+  constructor(props) {
+    super(props);
+    this.textInput = React.createRef();
+  }
+  render() {
+    // This will *not* work!
+    return (
+      <MyFunctionComponent ref={this.textInput} />
+    );
+  }
+}
+```
+
+Default Values
+
+```js
+render() {
+  return (
+    <form onSubmit={this.handleSubmit}>
+      <label>
+        Name:
+        <input
+          defaultValue="Bob"
+          type="text"
+          ref={this.input} />
+      </label>
+      <input type="submit" value="Submit" />
+    </form>
+  );
+}
+```
+
+### Lifting State Up
+
+> Often, several components need to reflect the same changing data. We recommend lifting the shared state up to their closest common ancestor. Let’s see how this works in action.
+
+child의 state를 common parent의 state로 옮기고, props를 통해 child로 전달.  
+child의 변화는 props에 callback을 전달해서 child에서 호출시 parameter로 전달.
+
+### Composition vs Inheritance
+
+> React has a powerful composition model, and we recommend using composition instead of inheritance to reuse code between components.
+
+#### props.children
+
+```js
+function SplitPane(props) {
+  return (
+    <div className="SplitPane">
+      <div className="SplitPane-left">
+        {props.left}
+      </div>
+      <div className="SplitPane-right">
+        {props.right}
+      </div>
+    </div>
+  );
+}
+
+function App() {
+  return (
+    <SplitPane
+      left={
+        <Contacts />
+      }
+      right={
+        <Chat />
+      } />
+  );
+}
+```
+
+#### composition better then inheritance
+
+```js
+function Dialog(props) {
+  return (
+    <FancyBorder color="blue">
+      <h1 className="Dialog-title">
+        {props.title}
+      </h1>
+      <p className="Dialog-message">
+        {props.message}
+      </p>
+    </FancyBorder>
+  );
+}
+
+function WelcomeDialog() {
+  return (
+    <Dialog
+      title="Welcome"
+      message="Thank you for visiting our spacecraft!" />
+
+  );
+}
+```
+
+### Thinking in React
+
+#### Step 1: Break The UI Into A Component Hierarchy
+
+[single responsibility principle](https://en.wikipedia.org/wiki/Single_responsibility_principle)
+
+#### Step 2: Build A Static Version in React
+
+> props are a way of passing data from parent to child. If you’re familiar with the concept of state, don’t use state at all to build this static version.
+
+#### Step 3: Identify The Minimal (but complete) Representation Of UI State
+
+>1. Is it passed in from a parent via props? If so, it probably isn’t state.  
+>2. Does it remain unchanged over time? If so, it probably isn’t state.  
+>3. Can you compute it based on any other state or props in your component? If so, it isn’t state.
+
+#### Step 4: Identify Where Your State Should Live
+
+>1. Identify every component that renders something based on that state.
+>2. Find a common owner component (a single component above all the components that need the state in the hierarchy).
+>3. Either the common owner or another component higher up in the hierarchy should own the state.
+>4. If you can’t find a component where it makes sense to own the state, create a new component simply for holding the state and add it somewhere in the hierarchy above the common owner component.
+
+#### Step 5: Add Inverse Data Flow
 
 ## Reference
 
