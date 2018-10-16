@@ -83,6 +83,8 @@ class App extends Component {
 
 #### style 과 className
 
+style
+
 ```js
 class App extends Component {
   render() {
@@ -94,6 +96,28 @@ class App extends Component {
     };
 
     return <div style={style}>hi there</div>;
+  }
+}
+```
+
+className
+
+```css
+.App {
+  background: black;
+  color: aqua;
+  font-size: 36px;
+  padding: 1rem;
+  font-weight: 600;
+}
+```
+
+```js
+import './App.css';
+
+class App extends Component {
+  render() {
+    return <div className="App">리액트</div>;
   }
 }
 ```
@@ -871,17 +895,21 @@ child 의 변화는 props 에 callback 을 전달해서 child 에서 호출시 p
 #### props.children
 
 ```js
-function SplitPane(props) {
+function FancyBorder(props) {
   return (
-    <div className="SplitPane">
-      <div className="SplitPane-left">{props.left}</div>
-      <div className="SplitPane-right">{props.right}</div>
+    <div className={'FancyBorder FancyBorder-' + props.color}>
+      {props.children}
     </div>
   );
 }
 
-function App() {
-  return <SplitPane left={<Contacts />} right={<Chat />} />;
+function WelcomeDialog() {
+  return (
+    <FancyBorder color="blue">
+      <h1 className="Dialog-title">Welcome</h1>
+      <p className="Dialog-message">Thank you for visiting our spacecraft!</p>
+    </FancyBorder>
+  );
 }
 ```
 
